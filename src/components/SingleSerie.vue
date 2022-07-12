@@ -1,13 +1,15 @@
 <template>
 
-    <div class="single-film">
-        <h3>Film</h3>
-        <h4>Title: {{ film.title }}</h4>
-        <h4>OG title: {{ film.original_title }}</h4>
+    <div class="single-serie">
+
+        <h3>Tv Serie</h3>
+        <h4>Name: {{ serie.name }}</h4>
+        <h4>OG name: {{ serie.original_title }}</h4>
         <h4>
-            Language: <lang-flag :iso="film.original_language" :squared="false"/> 
+            Language: <lang-flag :iso="serie.original_language" :squared="false"/> 
         </h4>
-        <h4>Vote: {{ film.vote_average }}</h4>
+        <h4>Vote: {{ serie.vote_average }}</h4>
+
     </div>
 
 </template>
@@ -18,7 +20,7 @@
 
     export default {
         name: "SingleCard",
-        props: { film: Object },
+        props: { serie: Object },
         components: { LangFlag },
     }
 
@@ -28,7 +30,11 @@
 
     @import "../style/colors.scss";
 
-    .single-film {
+    .cards {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .single-serie {
         margin: 10px;
         padding: 4px;
         width: 200px;

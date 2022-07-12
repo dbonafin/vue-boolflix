@@ -6,16 +6,16 @@
 
             <!-- Films navigation area -->
            <nav>
-                <h3>Film</h3>
+                <h3>Film and TV series</h3>
 
                 <!-- Input that runs the search engine -->
                 <div class="input-area">
                     <input 
                         v-model="searchFilm" 
-                        @keyup="filterElementsByText"
+                        @keyup="filterFilmsByText"
                         type="search" 
                         id="input-search" 
-                        placeholder="Movie name here..">
+                        placeholder="Type the name here..">
                     <!-- Button that searches the films that have the user search in their name -->
                     <button class="search-btn" @click.prevent="getFilm">Cerca</button>
                 </div>
@@ -28,14 +28,13 @@
                     <SingleCard :film="singleFilm"/>
                 </div>
 
+                <div v-for="singleSerie in seriesArray" :key="singleSerie.id" class="single-element">
+                    <SingleSerie :serie="singleSerie"/>
+                </div>
+
            </div>
 
-
         </div>
-
-        <!-- Here the tv series content area -->
-        <!-- <div class="series-container">
-        </div> -->
 
     </section>
 
@@ -45,21 +44,29 @@
 
     import axios from "axios";
     import SingleCard from "./SingleCard.vue";
+    import SingleSerie from "./SingleSerie.vue";
 
     export default {
     name: "MainSection",
-    components: { SingleCard },
+    components: { SingleCard, SingleSerie },
     data() {
         return {
-            url: `https://api.themoviedb.org/3/search/movie?api_key=ba71ee58a03780066e635cc4822c198b`,
+            filmUrl: `https://api.themoviedb.org/3/search/movie?api_key=ba71ee58a03780066e635cc4822c198b`,
+            serieUrl: `https://api.themoviedb.org/3/search/tv?api_key=ba71ee58a03780066e635cc4822c198b`,
             filmsArray: [],
-            searchFilm: ''
+            seriesArray: [],
+            searchFilm: '',
+            loadingComplete: false
         };
     },
+    created() {
+        this.getFilm();
+    },
     methods: {
+        // Funcion that prints all the films with the user search in their name
         getFilm() {
             // Call api for the film informations - Dynamic query for responsive results
-            axios.get(`${this.url}&query=${this.searchFilm}&language=it-IT`)
+            axios.get(`${this.filmUrl}&query=${this.searchFilm}&language=it-IT`)
                 .then((res) => {
                   if(this.searchFilm !== '') {     
                   // If the input is not empty add the results to the filmsArray
@@ -72,13 +79,42 @@
                   // Reset the search input 
                   this.searchFilm = '';
                 });
+            // When the films loading ends call the tv series function
+            this.getSeries();
         },
-        filterElementsByText() {
+         // Funcion that prints all the tv series with the user search in their name
+        getSeries() {
+                // Call api for the tv serie informations - Dynamic query for responsive results
+            axios.get(`${this.serieUrl}&query=${this.searchFilm}&language=it-IT`)
+                .then((res) => {
+                  if(this.searchFilm !== '') {     
+                  // If the input is not empty add the results to the seriesArray
+                  this.seriesArray = res.data.results;
+                  } else {
+                  // If the input is empty don't show any info
+                     this.seriesArray = '';
+                  }
+                });
+            this.loadingComplete = true;
+        },
+        // Films filter search
+        filterFilmsByText() {
             if (this.searchFilm === '') {
                 return "";
             } else {
                 // If the input is not empty show only the elements that include the user search
+                this.filterSeriesByText();
                 return this.filmsArray.includes(this.searchFilm);   
+            }
+
+        },
+        // Tv series filter search (able to use the same search input)
+        filterSeriesByText() {
+            if (this.searchFilm === '') {
+                return "";
+            } else {
+                // If the input is not empty show only the elements that include the user search
+                return this.seriesArray.includes(this.searchFilm);   
             }
         }
     },
@@ -120,10 +156,6 @@
         .cards-container {
             display: flex;
             flex-wrap: wrap;
-            .single-element {
-                margin: 10px 5px;
-                width: calc((100% / 6) - 10px);
-            }
         }
     }
 
