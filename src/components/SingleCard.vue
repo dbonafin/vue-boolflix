@@ -1,10 +1,10 @@
 <template>
 
     <div class="single-card">
-        <h4>{{ film.title }}</h4>
-        <h4>{{ film.original_title }}</h4>
-        <h4>{{ film.original_language }}</h4>
-        <h4>{{ film.vote_average }}</h4>
+        <h4>Title: {{ film.title }}</h4>
+        <h4>OG title: {{ film.original_title }}</h4>
+        <h4>OG language: {{ film.original_language }}</h4>
+        <h4>Vote: {{ film.vote_average }}</h4>
     </div>
 
 </template>
@@ -27,6 +27,7 @@
         background-color: lightblue;
         h4 {
             color: black;
+            margin: 5px 0;
         }
     }
 

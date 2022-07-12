@@ -23,7 +23,7 @@
            <!-- Film cards area -->
            <div class="cards-container">
 
-                <div v-for="singleFilm in filmsArray" :key="singleFilm.id">
+                <div v-for="singleFilm in filmsArray" :key="singleFilm.id" class="single-element">
                     <SingleCard :film="singleFilm"/>
                 </div>
 
@@ -50,14 +50,14 @@
     components: { SingleCard },
     data() {
         return {
-            url: `https://api.themoviedb.org/3/search/movie?api_key=ba71ee58a03780066e635cc4822c198b&query=${this.searchFilm}&language=it-IT`,
+            url: `https://api.themoviedb.org/3/search/movie?api_key=ba71ee58a03780066e635cc4822c198b`,
             filmsArray: [],
             searchFilm: ''
         };
     },
     methods: {
         getFilm() {
-            axios.get(this.url)
+            axios.get(`${this.url}&query=${this.searchFilm}&language=it-IT`)
                 .then((res) => {
                   if(this.searchFilm !== '') {        
                   this.filmsArray = res.data.results;
@@ -110,7 +110,9 @@
         .cards-container {
             display: flex;
             flex-wrap: wrap;
-            margin: 10px 20px;
+            .single-element {
+                margin: 10px;
+            }
         }
     }
 
