@@ -9,17 +9,31 @@
                 <h3>Film</h3>
 
                 <div class="input-area">
-                    <input type="search" id="input-search" placeholder="Movie name here..">
-                    <button class="search-btn">Cerca</button>
+                    <input 
+                        v-model="searchFilm" 
+                        @keyup="filterElementsByText"
+                        type="search" 
+                        id="input-search" 
+                        placeholder="Movie name here..">
+
+                    <button class="search-btn" @click.prevent="getFilm">Cerca</button>
                 </div>
            </nav>
+
+           <!-- Film cards area -->
+           <div class="cards-container">
+
+                <div v-for="singleFilm in filmsArray" :key="singleFilm.id">
+                    <SingleCard :film="singleFilm"/>
+                </div>
+
+           </div>
 
 
         </div>
 
         <!-- Here the tv series content area -->
         <!-- <div class="series-container">
-
         </div> -->
 
     </section>
@@ -29,18 +43,39 @@
 <script>
 
     import axios from "axios";
+    import SingleCard from "./SingleCard.vue";
 
     export default {
-        name: "MainSection",
-        data() {
-            return {
-                url: "https://api.themoviedb.org/3/movie/550?api_key=ba71ee58a03780066e635cc4822c198b"
+    name: "MainSection",
+    components: { SingleCard },
+    data() {
+        return {
+            url: `https://api.themoviedb.org/3/search/movie?api_key=ba71ee58a03780066e635cc4822c198b&query=${this.searchFilm}&language=it-IT`,
+            filmsArray: [],
+            searchFilm: ''
+        };
+    },
+    methods: {
+        getFilm() {
+            axios.get(this.url)
+                .then((res) => {
+                  if(this.searchFilm !== '') {        
+                  this.filmsArray = res.data.results;
+                  console.log(this.filmsArray);
+                  } else {
+                     this.filmsArray = '';
+                  }
+                });
+        },
+        filterElementsByText() {
+            if (this.searchFilm === '') {
+                return "";
+            } else {
+                return this.filmsArray.includes(this.searchFilm);   
             }
-        },
-        methods: {
-            axios
-        },
-    }
+        }
+    },
+}
 
 </script>
 
@@ -71,6 +106,11 @@
                 border: 1px solid black;
                 border-radius: 5px;
             }
+        }
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 10px 20px;
         }
     }
 
