@@ -1,0 +1,20 @@
+// Reset
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+img {
+    width: 100%;
+    display: block;
+}
+
+// Brand colors
+@import "./colors.scss";
+
+// Common
+body {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    background-color: $tertiary-color;
+}
