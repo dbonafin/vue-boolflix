@@ -65,10 +65,8 @@
         props: { serie: Object },
         computed: {
             decimalToBinSerie () {
-                if (this.serie.vote_average !== 0) {
-                    let decimalVote = this.serie.vote_average;
-                    let binaryVote = parseInt(decimalVote).toFixed(0);
-                    return ((binaryVote/2));
+                if (this.serie.vote_average !== '') {
+                    return Math.round(this.serie.vote_average/2)
                 } else {
                     return '';
                 }

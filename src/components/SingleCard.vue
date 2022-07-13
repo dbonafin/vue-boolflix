@@ -64,12 +64,10 @@
         props: { film: Object },
         computed: {
               decimalToBinFilm () {
-                if (this.film.vote_average !== 0) {
-                    let decimalVote = this.film.vote_average;
-                    let binaryVote = parseInt(decimalVote).toFixed(0);
-                    return ((binaryVote/2));
+                if (this.film.vote_average !== '') {
+                    return Math.round(this.film.vote_average/2)
                 } else {
-                    return '';
+                    return 0;
                 }
                
             }
