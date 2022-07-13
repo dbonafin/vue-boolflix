@@ -8,17 +8,42 @@
         <img v-else class="alternative-img" src="https://placehold.jp/40/211f1f/ff0027/220x270.png?text=Image+Not+Found" alt="image">
 
         <!-- Single tv serie infos on hover -->
-           <div class="overlay">
-            <p><b>Title:</b> {{ serie.title }}</p>
-            <p><b>OG title:</b> {{ serie.original_title }}</p>
-            <p><b>Vote:</b> {{ decimalToBinary }}</p>
+        <div class="overlay">
+           
+             <!-- Film title options -->
+            <p v-if="serie.title">
+                <b>Title: </b> {{ serie.title }}
+            </p>
+            <p v-else>Title: Not available</p>
+
+            <!-- Film original title options -->
+             <p v-if="serie.original_title">
+                <b>Title: </b> {{ serie.original_title }}
+            </p>
+            <p v-else>OG title: Not available</p>
+
+            <!-- Film vote options -->
+            <p v-if="serie.vote_average">
+                <b>Vote: </b> 
+                <ul>
+                    <li v-for="index in decimalToBinSerie" :key="index">
+                        <font-awesome-icon icon="fa-solid fa-star" />
+                    </li>
+                </ul>
+            </p>
+            <p v-else>
+                <b>Vote: </b>
+                <span>Not available</span> 
+            </p>
+
+            <!-- Film overview options -->
             <p v-if="serie.overview">
-                <b>Overview: </b> 
+                <b>Overview:</b> 
                 {{serie.overview.substring(0,80)+".."}}
             </p>
             <p v-else>
-                <b>Language: </b> 
-                <lang-flag :iso="serie.original_language" :squared="false"/> 
+                <b>Overview: </b>
+                <span>Not available</span> 
             </p>
 
         </div>
@@ -29,8 +54,6 @@
 
 <script>
 
-    import LangFlag from 'vue-lang-code-flags';
-
     export default {
         name: "SingleCard",
         data() {
@@ -38,13 +61,18 @@
                 imgUrl: `https://image.tmdb.org/t/p/w185${this.serie.poster_path}`,
             }
         },
-        components: { LangFlag },
+        components: {},
         props: { serie: Object },
         computed: {
-            decimalToBinary () {
-                let decimalVote = this.serie.vote_average;
-                let binaryVote = decimalVote.toFixed(0);
-                return binaryVote;
+            decimalToBinSerie () {
+                if (this.serie.vote_average !== 0) {
+                    let decimalVote = this.serie.vote_average;
+                    let binaryVote = parseInt(decimalVote).toFixed(0);
+                    return ((binaryVote/2));
+                } else {
+                    return '';
+                }
+               
             }
         }
     }

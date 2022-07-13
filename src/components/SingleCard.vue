@@ -9,16 +9,41 @@
 
         <!-- Single film infos on hover -->
         <div class="overlay">
-            <p><b>Title:</b> {{ film.title }}</p>
-            <p><b>OG title:</b> {{ film.original_title }}</p>
-            <p><b>Vote:</b> {{ decimalToBinary }}</p>
+
+            <!-- Film title options -->
+            <p v-if="film.title">
+                <b>Title: </b> {{ film.title }}
+            </p>
+            <p v-else>Title: Not available</p>
+
+            <!-- Film original title options -->
+             <p v-if="film.original_title">
+                <b>Title: </b> {{ film.original_title }}
+            </p>
+            <p v-else>OG title: Not available</p>
+
+            <!-- Film vote options -->
+            <p v-if="film.vote_average">
+                <b>Vote: </b> 
+                <ul>
+                    <li v-for="index in decimalToBinFilm" :key="index">
+                        <font-awesome-icon icon="fa-solid fa-star" />
+                    </li>
+                </ul>
+            </p>
+            <p v-else>
+                <b>Vote: </b>
+                <span>Not available</span> 
+            </p>
+
+            <!-- Film overview options -->
             <p v-if="film.overview">
-                <b>Overview: </b> 
+                <b>Overview:</b> 
                 {{film.overview.substring(0,80)+".."}}
             </p>
             <p v-else>
-                <b>Language: </b> 
-                <lang-flag :iso="film.original_language" :squared="false"/> 
+                <b>Overview: </b>
+                <span>Not available</span> 
             </p>
 
         </div>
@@ -28,8 +53,6 @@
 
 <script>
 
-    import LangFlag from 'vue-lang-code-flags';
-
     export default {
         name: "SingleCard",
         data() {
@@ -37,13 +60,18 @@
                 imgUrl: `https://image.tmdb.org/t/p/w185${this.film.poster_path}`
             }
         },
-        components: { LangFlag },
+        components: {},
         props: { film: Object },
         computed: {
-            decimalToBinary () {
-                let decimalVote = this.film.vote_average;
-                let binaryVote = decimalVote.toFixed(0);
-                return binaryVote;
+              decimalToBinFilm () {
+                if (this.film.vote_average !== 0) {
+                    let decimalVote = this.film.vote_average;
+                    let binaryVote = parseInt(decimalVote).toFixed(0);
+                    return ((binaryVote/2));
+                } else {
+                    return '';
+                }
+               
             }
         }
     }
@@ -75,6 +103,9 @@
             position: absolute;
             left: 10px;
             top: 80px;
+            .fa-star {
+                color: gold;
+            }
         }
         &:hover .overlay {
             display: block;
