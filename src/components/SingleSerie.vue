@@ -1,6 +1,8 @@
 <template>
 
     <div class="single-card">
+        
+        <!-- Single tv serie card infos - image, title, overview etc. -->
 
         <h3>Tv Serie</h3>
         <img v-if="serie.poster_path" :src="imgUrl" alt="image">

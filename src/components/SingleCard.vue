@@ -2,6 +2,8 @@
 
     <div class="single-card">
 
+        <!-- Single film card infos - image, title, overview etc. -->
+
         <h3>Film</h3>
         <img v-if="film.poster_path" :src="imgUrl" alt="image">
         <!-- alternative image if the item does not have an image -->
