@@ -3,8 +3,9 @@
     <div class="single-card">
 
         <h3>Film</h3>
-        <!-- alternative image if the item does not have an image --> 
-        <img class="alternative-img" src="https://placehold.jp/40/211f1f/ff0027/220x270.png?text=Image+Not+Found" alt="image">
+        <img v-if="film.poster_path" :src="imgUrl" alt="image">
+        <!-- alternative image if the item does not have an image -->
+        <img v-else class="alternative-img" src="https://placehold.jp/40/211f1f/ff0027/220x270.png?text=Image+Not+Found" alt="image">
 
         <!-- Single film infos on hover -->
         <div class="overlay">
@@ -25,6 +26,11 @@
 
     export default {
         name: "SingleCard",
+         data() {
+            return {
+                imgUrl: `https://image.tmdb.org/t/p/w185${this.film.poster_path}`
+            }
+        },
         props: { film: Object },
         components: { LangFlag },
     }
@@ -37,7 +43,7 @@
 
     // Single card styles - same to films and tv series
     .single-card {
-        margin: 10px;
+        margin: 20px 10px;
         padding: 4px;
         width: 200px;
         height: 300px;
@@ -45,7 +51,6 @@
         background-color: $secondary-color;
         h3 {
         text-align: center;
-        margin-bottom: 10px;
         color: $primary-color;
         } 
         h4 {
