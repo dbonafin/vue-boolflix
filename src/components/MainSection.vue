@@ -48,7 +48,6 @@
 
     export default {
     name: "MainSection",
-    components: { SingleCard, SingleSerie },
     data() {
         return {
             filmUrl: `https://api.themoviedb.org/3/search/movie?api_key=ba71ee58a03780066e635cc4822c198b`,
@@ -58,6 +57,7 @@
             searchFilm: 'xzx'
         };
     },
+    components: { SingleCard, SingleSerie },
     mounted() {
         this.getFilm();
         this.getSeries();

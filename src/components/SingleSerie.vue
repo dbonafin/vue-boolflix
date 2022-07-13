@@ -8,13 +8,19 @@
         <img v-else class="alternative-img" src="https://placehold.jp/40/211f1f/ff0027/220x270.png?text=Image+Not+Found" alt="image">
 
         <!-- Single tv serie infos on hover -->
-        <div class="overlay">
-            <h4>Name: {{ serie.name }}</h4>
-            <h4>OG name: {{ serie.original_title }}</h4>
-            <h4>
-                Language: <lang-flag :iso="serie.original_language" :squared="false"/> 
-            </h4>
-            <h4>Vote: {{ serie.vote_average }}</h4>
+           <div class="overlay">
+            <p><b>Title:</b> {{ serie.title }}</p>
+            <p><b>OG title:</b> {{ serie.original_title }}</p>
+            <p><b>Vote:</b> {{ decimalToBinary }}</p>
+            <p v-if="serie.overview">
+                <b>Overview: </b> 
+                {{serie.overview.substring(0,80)+".."}}
+            </p>
+            <p v-else>
+                <b>Language: </b> 
+                <lang-flag :iso="serie.original_language" :squared="false"/> 
+            </p>
+
         </div>
         
     </div>
@@ -29,11 +35,18 @@
         name: "SingleCard",
         data() {
             return {
-                imgUrl: `https://image.tmdb.org/t/p/w185${this.serie.poster_path}`
+                imgUrl: `https://image.tmdb.org/t/p/w185${this.serie.poster_path}`,
             }
         },
-        props: { serie: Object },
         components: { LangFlag },
+        props: { serie: Object },
+        computed: {
+            decimalToBinary () {
+                let decimalVote = this.serie.vote_average;
+                let binaryVote = decimalVote.toFixed(0);
+                return binaryVote;
+            }
+        }
     }
 
 </script>

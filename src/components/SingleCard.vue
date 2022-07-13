@@ -9,12 +9,18 @@
 
         <!-- Single film infos on hover -->
         <div class="overlay">
-            <h4>Title: {{ film.title }}</h4>
-            <h4>OG title: {{ film.original_title }}</h4>
-            <h4>
-                Language: <lang-flag :iso="film.original_language" :squared="false"/> 
-            </h4>
-            <h4>Vote: {{ film.vote_average }}</h4>
+            <p><b>Title:</b> {{ film.title }}</p>
+            <p><b>OG title:</b> {{ film.original_title }}</p>
+            <p><b>Vote:</b> {{ decimalToBinary }}</p>
+            <p v-if="film.overview">
+                <b>Overview: </b> 
+                {{film.overview.substring(0,80)+".."}}
+            </p>
+            <p v-else>
+                <b>Language: </b> 
+                <lang-flag :iso="film.original_language" :squared="false"/> 
+            </p>
+
         </div>
     </div>
 
@@ -26,13 +32,20 @@
 
     export default {
         name: "SingleCard",
-         data() {
+        data() {
             return {
                 imgUrl: `https://image.tmdb.org/t/p/w185${this.film.poster_path}`
             }
         },
-        props: { film: Object },
         components: { LangFlag },
+        props: { film: Object },
+        computed: {
+            decimalToBinary () {
+                let decimalVote = this.film.vote_average;
+                let binaryVote = decimalVote.toFixed(0);
+                return binaryVote;
+            }
+        }
     }
 
 </script>
