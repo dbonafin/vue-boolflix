@@ -55,16 +55,17 @@
             serieUrl: `https://api.themoviedb.org/3/search/tv?api_key=ba71ee58a03780066e635cc4822c198b`,
             filmsArray: [],
             seriesArray: [],
-            searchFilm: '',
-            loadingComplete: false
+            searchFilm: 'xzx'
         };
     },
-    created() {
+    mounted() {
         this.getFilm();
+        this.getSeries();
     },
     methods: {
-        // Funcion that prints all the films with the user search in their name
+        // Function that prints all the films with the user search in their name
         getFilm() {
+            this.getSeries();
             // Call api for the film informations - Dynamic query for responsive results
             axios.get(`${this.filmUrl}&query=${this.searchFilm}&language=it-IT`)
                 .then((res) => {
@@ -78,11 +79,10 @@
 
                   // Reset the search input 
                   this.searchFilm = '';
+   
                 });
-            // When the films loading ends call the tv series function
-            this.getSeries();
         },
-         // Funcion that prints all the tv series with the user search in their name
+         // Function that prints all the tv series with the user search in their name
         getSeries() {
                 // Call api for the tv serie informations - Dynamic query for responsive results
             axios.get(`${this.serieUrl}&query=${this.searchFilm}&language=it-IT`)
@@ -94,8 +94,7 @@
                   // If the input is empty don't show any info
                      this.seriesArray = '';
                   }
-                });
-            this.loadingComplete = true;
+                }); 
         },
         // Films filter search
         filterFilmsByText() {
@@ -114,7 +113,7 @@
                 return "";
             } else {
                 // If the input is not empty show only the elements that include the user search
-                return this.seriesArray.includes(this.searchFilm);   
+                return this.seriesArray.includes(this.searchFilm); 
             }
         }
     },
