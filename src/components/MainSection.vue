@@ -65,16 +65,15 @@
     name: "MainSection",
     data() {
         return {
-            // filmUrl: `https://api.themoviedb.org/3/search/movie?api_key=ba71ee58a03780066e635cc4822c198b`,
-            // serieUrl: `https://api.themoviedb.org/3/search/tv?api_key=ba71ee58a03780066e635cc4822c198b`,
-            // filmsArray: [],
-            // seriesArray: [],
-            // searchFilm: '',
-            // loadingComplete: false
+            filmUrl: `https://api.themoviedb.org/3/search/movie?api_key=ba71ee58a03780066e635cc4822c198b`,
+            serieUrl: `https://api.themoviedb.org/3/search/tv?api_key=ba71ee58a03780066e635cc4822c198b`,
+            filmsArray: [],
+            seriesArray: [],
+            searchFilm: '',
+            loadingComplete: false
         };
     },
     components: { SingleCard, SingleSerie },
-    props: {filmsArray: Array, seriesArray: Array},
     methods: {
         // Function that prints all the films with the user search in their name
         getFilm() {
