@@ -1,38 +1,53 @@
 <template>
 
     <section>
+
+        <!-- Navigation area -->
+        <nav>
+            <!-- Input that runs the search engine -->
+            <div class="input-area">
+                <input 
+                    class="nav-item"
+                    v-model="searchFilm" 
+                    @keyup="filterFilmsByText"
+                    type="search" 
+                    id="input-search">
+                <!-- Button that searches the films that have the user search in their name -->
+                <button class="search-btn nav-item" @click.prevent="getFilm">Cerca</button>
+            </div>
+        </nav>
+
         <!-- Here the films content area  -->
         <div class="films-container">
 
-            <!-- Films navigation area -->
-           <nav>
-                <h3>Film and TV series</h3>
-
-                <!-- Input that runs the search engine -->
-                <div class="input-area">
-                    <input 
-                        v-model="searchFilm" 
-                        @keyup="filterFilmsByText"
-                        type="search" 
-                        id="input-search" 
-                        placeholder="Type the name here..">
-                    <!-- Button that searches the films that have the user search in their name -->
-                    <button class="search-btn" @click.prevent="getFilm">Cerca</button>
-                </div>
-           </nav>
-
            <!-- Film cards area -->
-           <div class="cards-container">
+           <div v-if="loadingComplete" class="cards-container">
 
-                <div v-for="singleFilm in filmsArray" :key="singleFilm.id" class="single-element">
-                    <SingleCard :film="singleFilm"/>
+                <!-- Show the films row just if there are results -->
+                <div v-if="seriesArray.length !== 0">
+                    <h2>Films</h2>
+                    <div class="row films-area">
+                        <div v-for="singleFilm in filmsArray" :key="singleFilm.id" class="single-element">
+                            <SingleCard :film="singleFilm"/>
+                        </div>
+                    </div>
                 </div>
+                <div v-else></div>
 
-                <div v-for="singleSerie in seriesArray" :key="singleSerie.id" class="single-element">
-                    <SingleSerie :serie="singleSerie"/>
+                <!-- Show the tv series row just if there are results -->
+                <div v-if="seriesArray.length !== 0">
+                    <h2>Tv Series</h2>
+                    <div class="row series-area">
+                        <div v-for="singleSerie in seriesArray" :key="singleSerie.id" class="single-element">
+                            <SingleSerie :serie="singleSerie"/>
+                        </div>
+                    </div>
                 </div>
+                <p v-else></p>
 
            </div>
+
+           <div v-else></div>
 
         </div>
 
@@ -50,18 +65,16 @@
     name: "MainSection",
     data() {
         return {
-            filmUrl: `https://api.themoviedb.org/3/search/movie?api_key=ba71ee58a03780066e635cc4822c198b`,
-            serieUrl: `https://api.themoviedb.org/3/search/tv?api_key=ba71ee58a03780066e635cc4822c198b`,
-            filmsArray: [],
-            seriesArray: [],
-            searchFilm: 'xzx'
+            // filmUrl: `https://api.themoviedb.org/3/search/movie?api_key=ba71ee58a03780066e635cc4822c198b`,
+            // serieUrl: `https://api.themoviedb.org/3/search/tv?api_key=ba71ee58a03780066e635cc4822c198b`,
+            // filmsArray: [],
+            // seriesArray: [],
+            // searchFilm: '',
+            // loadingComplete: false
         };
     },
     components: { SingleCard, SingleSerie },
-    mounted() {
-        this.getFilm();
-        this.getSeries();
-    },
+    props: {filmsArray: Array, seriesArray: Array},
     methods: {
         // Function that prints all the films with the user search in their name
         getFilm() {
@@ -95,6 +108,7 @@
                      this.seriesArray = '';
                   }
                 }); 
+            this.loadingComplete = true;
         },
         // Films filter search
         filterFilmsByText() {
@@ -133,28 +147,32 @@
             margin-bottom: 20px;
             h3 {
             font-size: 22px;
-            margin: 0 10px;
+            margin-right: 10px;
             color: $text-color;
             }
             // Navigation area input and button styles
+            .nav-item {
+                color: $text-color;
+                padding: 6px 10px;
+                border: 1px solid $primary-color;
+                background-color: $primary-color;
+            }
             #input-search {
-                padding: 4px;
-                border: 1px solid black;
                 border-radius: 5px;
                 text-align: center;
             }
             .search-btn {
                 cursor: pointer;
                 margin-left: 10px;
-                padding: 4px;
-                border: 1px solid black;
                 border-radius: 5px;
             }
         }
-        // Cards container and single card styles
-        .cards-container {
+        h2 {
+            margin-left: 8px;
+        }
+        .row {
             display: flex;
-            flex-wrap: wrap;
+            overflow-x: scroll;
         }
     }
 

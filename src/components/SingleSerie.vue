@@ -4,7 +4,6 @@
         
         <!-- Single tv serie card infos - image, title, overview etc. -->
 
-        <h3>Tv Serie</h3>
         <img v-if="serie.poster_path" :src="imgUrl" alt="image">
         <!-- alternative image if the item does not have an image -->
         <img v-else class="alternative-img" src="https://placehold.jp/40/211f1f/ff0027/220x270.png?text=Image+Not+Found" alt="image">
@@ -28,8 +27,11 @@
             <p v-if="serie.vote_average">
                 <b>Vote: </b> 
                 <ul>
-                    <li v-for="index in decimalToBinSerie" :key="index">
+                      <li v-for="index in decimalToBinSerie" :key="index" class="gold-star">
                         <font-awesome-icon icon="fa-solid fa-star" />
+                    </li>
+                    <li v-for="n in (5 - decimalToBinSerie)" :key="n" class="white-star">
+                        <font-awesome-icon  icon="fa-solid fa-star" />
                     </li>
                 </ul>
             </p>

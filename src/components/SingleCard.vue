@@ -4,7 +4,6 @@
 
         <!-- Single film card infos - image, title, overview etc. -->
 
-        <h3>Film</h3>
         <img v-if="film.poster_path" :src="imgUrl" alt="image">
         <!-- alternative image if the item does not have an image -->
         <img v-else class="alternative-img" src="https://placehold.jp/40/211f1f/ff0027/220x270.png?text=Image+Not+Found" alt="image">
@@ -27,9 +26,13 @@
             <!-- Film vote options -->
             <p v-if="film.vote_average">
                 <b>Vote: </b> 
+                <!-- Show gold stars for the average vote and white stars for the rest -->
                 <ul>
-                    <li v-for="index in decimalToBinFilm" :key="index">
+                    <li v-for="index in decimalToBinFilm" :key="index" class="gold-star">
                         <font-awesome-icon icon="fa-solid fa-star" />
+                    </li>
+                    <li v-for="n in (5 - decimalToBinFilm)" :key="n" class="white-star">
+                        <font-awesome-icon  icon="fa-solid fa-star" />
                     </li>
                 </ul>
             </p>
@@ -85,7 +88,6 @@
     // Single card styles - same to films and tv series
     .single-card {
         margin: 20px 10px;
-        padding: 4px;
         width: 200px;
         height: 300px;
         position: relative;
@@ -103,8 +105,11 @@
             position: absolute;
             left: 10px;
             top: 80px;
-            .fa-star {
+            .gold-star {
                 color: gold;
+            }
+            .white-star {
+                color: white;
             }
         }
         &:hover .overlay {
